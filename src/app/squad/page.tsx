@@ -1,0 +1,70 @@
+"use client";
+
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import SectionHeader from "@/components/SectionHeader";
+import Link from "next/link";
+
+const members = [
+  { initials: "ST", name: "Sankta T", slug: "sankta-t", role: "DJ · Producer", bio: "Bio coming soon.", shows: [], links: [] },
+  { initials: "LL", name: "Louie Lanka", slug: "louie-lanka", role: "DJ · Producer", bio: "Bio coming soon.", shows: [], links: [] },
+  { initials: "HL", name: "HypeLies", slug: "hypelies", role: "DJ · Producer", bio: "Bio coming soon.", shows: [], links: [] },
+  { initials: "DB", name: "Dru-Boy", slug: "dru-boy", role: "DJ · Producer", bio: "Bio coming soon.", shows: [], links: [] },
+  { initials: "GG", name: "Glass Guts", slug: "glass-guts", role: "DJ · Producer", bio: "Bio coming soon.", shows: [], links: [] },
+  { initials: "AX", name: "Alexi", slug: "alexi", role: "DJ · Producer", bio: "Bio coming soon.", shows: [], links: [] },
+];
+
+export default function SquadPage() {
+  return (
+    <main>
+      <Nav />
+      <div style={{ paddingTop: 64 }}>
+        {/* Hero banner */}
+        <div style={{
+          padding: "80px 40px 60px",
+          background: "var(--mid-gray)",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          position: "relative", zIndex: 10,
+        }}>
+          <SectionHeader num="02" title="The Squad" sub="AboveGround" />
+          <p style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "var(--gray)", letterSpacing: "0.1em", lineHeight: 1.8, maxWidth: 560 }}>
+            Six artists. One collective. Chicago underground, est. 2021.
+          </p>
+        </div>
+
+        {/* Grid */}
+        <section style={{ position: "relative", zIndex: 10, background: "var(--black)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, background: "rgba(255,255,255,0.06)" }}>
+            {members.map((m) => (
+              <Link
+                key={m.slug}
+                href={`/squad/${m.slug}`}
+                style={{
+                  display: "block", background: "var(--black)",
+                  padding: "40px 32px", textDecoration: "none", color: "inherit",
+                  transition: "background 0.2s",
+                  borderBottom: "1px solid rgba(255,255,255,0.04)",
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = "var(--mid-gray)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "var(--black)")}
+              >
+                <div style={{
+                  width: 64, height: 64, borderRadius: "50%",
+                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontFamily: "'Bebas Neue', sans-serif", fontSize: 24, marginBottom: 20,
+                }}>
+                  {m.initials}
+                </div>
+                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, letterSpacing: "0.06em", marginBottom: 6 }}>{m.name}</div>
+                <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 9, color: "var(--gray)", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 16 }}>{m.role}</div>
+                <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 9, color: "var(--accent-cyan)", letterSpacing: "0.15em", textTransform: "uppercase" }}>View Page →</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </div>
+      <Footer />
+    </main>
+  );
+}
