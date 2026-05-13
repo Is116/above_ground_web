@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 export default function MailingList() {
-  const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState("");
+  const [email,    setEmail]    = useState("");
+  const [msg,      setMsg]      = useState("");
   const [msgColor, setMsgColor] = useState("var(--accent-cyan)");
 
   const handleSubmit = () => {
@@ -21,8 +21,8 @@ export default function MailingList() {
   return (
     <section
       id="mailing"
+      className="section-pad"
       style={{
-        padding: "100px 40px",
         background: "var(--mid-gray)",
         borderTop: "1px solid rgba(255,255,255,0.06)",
         textAlign: "center",
@@ -46,7 +46,7 @@ export default function MailingList() {
         <h2
           style={{
             fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(36px, 6vw, 64px)",
+            fontSize: "clamp(36px, 8vw, 64px)",
             letterSpacing: "0.05em",
             lineHeight: 1,
             marginBottom: 16,
@@ -66,15 +66,23 @@ export default function MailingList() {
           <br />No spam. Just signal.
         </p>
 
-        <div style={{ display: "flex", maxWidth: 440, margin: "0 auto" }}>
+        {/* Form — stacks vertically on very small screens */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            maxWidth: 440,
+            margin: "0 auto",
+          }}
+        >
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            onChange={e => setEmail(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && handleSubmit()}
             placeholder="your@email.com"
             style={{
-              flex: 1,
+              flex: "1 1 200px",
               background: "rgba(255,255,255,0.05)",
               border: "1px solid rgba(255,255,255,0.12)",
               borderRight: "none",
@@ -84,13 +92,15 @@ export default function MailingList() {
               padding: "14px 18px",
               outline: "none",
               letterSpacing: "0.05em",
+              minWidth: 0,
             }}
-            onFocus={e => (e.currentTarget.style.borderColor = "var(--accent-cyan)")}
-            onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
+            onFocus={e  => (e.currentTarget.style.borderColor = "var(--accent-cyan)")}
+            onBlur={e   => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
           />
           <button
             onClick={handleSubmit}
             style={{
+              flex: "0 0 auto",
               background: "var(--accent-cyan)",
               color: "var(--black)",
               border: "none",
@@ -98,7 +108,7 @@ export default function MailingList() {
               fontSize: 10,
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              padding: "14px 24px",
+              padding: "14px 22px",
               fontWeight: 700,
               whiteSpace: "nowrap",
               transition: "background 0.2s",

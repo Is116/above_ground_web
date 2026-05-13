@@ -6,9 +6,9 @@ import Link from "next/link";
 const socials = [
   { label: "Instagram", href: "#" },
   { label: "Soundcloud", href: "#" },
-  { label: "Bandcamp", href: "#" },
-  { label: "Twitch", href: "#" },
-  { label: "Contact", href: "mailto:info@aboveground.club" },
+  { label: "Bandcamp",   href: "#" },
+  { label: "Twitch",     href: "#" },
+  { label: "Contact",    href: "mailto:info@aboveground.club" },
 ];
 
 export default function Footer() {
@@ -17,7 +17,7 @@ export default function Footer() {
       style={{
         position: "relative",
         zIndex: 10,
-        padding: "40px",
+        padding: "32px 24px",
         background: "var(--black)",
         borderTop: "1px solid rgba(255,255,255,0.06)",
         display: "flex",
@@ -30,12 +30,12 @@ export default function Footer() {
       <Image
         src="/logos/logo-circle.png"
         alt="AboveGround"
-        width={32}
-        height={32}
+        width={30}
+        height={30}
         style={{ filter: "invert(1)", opacity: 0.25 }}
       />
 
-      <ul style={{ display: "flex", gap: 24, listStyle: "none", flexWrap: "wrap" }}>
+      <ul style={{ display: "flex", gap: 20, listStyle: "none", flexWrap: "wrap" }}>
         {socials.map((s) => (
           <li key={s.label}>
             <Link
@@ -62,7 +62,7 @@ export default function Footer() {
         style={{
           fontFamily: "'Space Mono', monospace",
           fontSize: 9,
-          letterSpacing: "0.2em",
+          letterSpacing: "0.18em",
           color: "rgba(255,255,255,0.15)",
           textTransform: "uppercase",
         }}
