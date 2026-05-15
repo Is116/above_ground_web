@@ -1,13 +1,28 @@
 "use client";
 
-const items = [
-  "Sankta T", "Louie Lanka", "HypeLies", "Dru-Boy", "Glass Guts", "Alexi",
-  "Really Underground, Really Outside", "Est. 2021", "Chicago, IL",
-  "Music · Events · Community",
-];
+import { useState, useEffect } from "react";
 
 export default function Marquee() {
+  const [items, setItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("/api/marquee")
+      .then(r => r.json())
+      .then((data: { id: number; text: string }[]) => setItems(data.map(d => d.text)));
+  }, []);
+
   const doubled = [...items, ...items];
+
+  if (items.length === 0) return (
+    <div style={{
+      borderTop: "1px solid rgba(255,255,255,0.06)",
+      borderBottom: "1px solid rgba(255,255,255,0.06)",
+      background: "rgba(0,255,204,0.03)",
+      padding: "11px 0",
+      position: "relative",
+      zIndex: 10,
+    }} />
+  );
 
   return (
     <div

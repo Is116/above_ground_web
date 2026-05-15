@@ -1,0 +1,5 @@
+import { getAllSquadMembers } from '@/lib/db';
+
+export function GET() {
+  return Response.json(getAllSquadMembers());
+}

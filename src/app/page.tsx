@@ -1,35 +1,47 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Nav from "@/components/Nav";
 import Marquee from "@/components/Marquee";
 import SectionHeader from "@/components/SectionHeader";
 import MailingList from "@/components/MailingList";
 import Footer from "@/components/Footer";
+import type { Event, SquadMember } from "@/lib/db";
 
 const ParticleField = dynamic(() => import("@/components/ParticleField"), { ssr: false });
-
-const events = [
-  { id: 1, type: "ag",       date: "JUN 15", title: "AG Pres: Too Many Men Radio",        venue: "TBA · Chicago, IL"      },
-  { id: 2, type: "ag",       date: "JUL 18", title: "AboveGround × Vibe Syndicate",       venue: "TBA · Chicago, IL"      },
-  { id: 3, type: "external", date: "AUG 03", title: "Sankta T @ Underground Resistance",  venue: "Venue TBA · Detroit, MI" },
-  { id: 4, type: "ag",       date: "AUG 22", title: "AboveGround Open Decks",             venue: "TBA · Chicago, IL"      },
-];
-
-const squad = [
-  { initials: "ST", name: "Sankta T",   role: "DJ · Producer", quote: "Sauce: something unique to me"  },
-  { initials: "LL", name: "Louie Lanka", role: "DJ · Producer", quote: "Your vibe, your frequency"      },
-  { initials: "HL", name: "HypeLies",   role: "DJ · Producer", quote: "Truth in the noise"             },
-  { initials: "DB", name: "Dru-Boy",    role: "DJ · Producer", quote: "In the mix, always"             },
-  { initials: "GG", name: "Glass Guts", role: "DJ · Producer", quote: "Transparent frequencies"        },
-  { initials: "AX", name: "Alexi",      role: "DJ · Producer", quote: "In the cut, always"             },
-];
+const DJScene = dynamic(() => import("@/components/DJScene"), { ssr: false });
 
 export default function Home() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [squad, setSquad] = useState<SquadMember[]>([]);
   const [filter, setFilter] = useState<"all" | "ag" | "external">("all");
+  const [sliderIdx, setSliderIdx] = useState(0);
+  const [sliderVisible, setSliderVisible] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/events").then(r => r.json()).then(setEvents);
+    fetch("/api/squad").then(r => r.json()).then(setSquad);
+  }, []);
+
+  useEffect(() => {
+    if (events.length < 2) return;
+    const t = setInterval(() => {
+      setSliderVisible(false);
+      setTimeout(() => {
+        setSliderIdx(i => (i + 1) % events.length);
+        setSliderVisible(true);
+      }, 400);
+    }, 4000);
+    return () => clearInterval(t);
+  }, [events.length]);
+
+  function goTo(idx: number) {
+    setSliderVisible(false);
+    setTimeout(() => { setSliderIdx(idx); setSliderVisible(true); }, 300);
+  }
+
   const filtered = filter === "all" ? events : events.filter(e => e.type === filter);
 
   const monoTag: React.CSSProperties = {
@@ -43,58 +55,116 @@ export default function Home() {
     <main>
       <ParticleField />
       <Nav />
-      <div style={{ marginTop: 64 }}>
-        <Marquee />
-      </div>
-
       {/* ── HERO ── */}
       <section
         style={{
           position: "relative",
           zIndex: 10,
-          minHeight: "100vh",
+          height: "100vh",
+          overflow: "hidden",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          padding: "80px 20px 100px",
+          padding: "0 20px 0",
         }}
       >
-        <p style={{ ...monoTag, color: "var(--accent-cyan)", marginBottom: 36, animation: "fadeUp .8s ease forwards .2s", opacity: 0 }}>
-          Est. 2021 — Really Underground, Really Outside
-        </p>
+        {/* laser background — covers entire hero behind all content */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+          <DJScene />
+        </div>
 
-        <Image
-          src="/logos/logo-text.png"
-          alt="AboveGround"
-          width={680}
-          height={160}
-          priority
-          style={{
-            width: "min(600px, 90vw)",
-            height: "auto",
-            filter: "brightness(0) invert(1)",
-            marginBottom: 32,
-            animation: "fadeUp .8s ease forwards .4s",
-            opacity: 0,
-          }}
-        />
+        {/* marquee pinned below the fixed nav */}
+        <div style={{ position: "absolute", top: 64, left: 0, right: 0, zIndex: 2 }}>
+          <Marquee />
+        </div>
 
-        <p style={{
-          fontFamily: "'Space Mono', monospace",
-          fontSize: "clamp(9px, 2.5vw, 12px)",
-          letterSpacing: "0.25em",
-          color: "var(--gray)",
-          textTransform: "uppercase",
-          marginBottom: 52,
-          animation: "fadeUp .8s ease forwards .6s",
-          opacity: 0,
-        }}>
-          Music · Events · Community
-        </p>
+        {/* events slider */}
+        <div style={{ position: "relative", zIndex: 1, width: "min(560px, 88vw)", animation: "fadeUp .8s ease forwards .6s", opacity: 0 }}>
+          {events.length === 0 ? (
+            <div style={{ height: 160 }} />
+          ) : (() => {
+            const ev = events[sliderIdx];
+            return (
+              <div style={{ transition: "opacity 0.4s ease", opacity: sliderVisible ? 1 : 0 }}>
+                {/* type badge */}
+                <div style={{ marginBottom: 16 }}>
+                  <span style={{
+                    fontFamily: "'Space Mono', monospace",
+                    fontSize: 9,
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    padding: "4px 12px",
+                    background: ev.type === "ag" ? "rgba(0,255,204,0.1)" : "rgba(255,230,0,0.08)",
+                    color: ev.type === "ag" ? "var(--accent-cyan)" : "var(--accent-yellow)",
+                    border: `1px solid ${ev.type === "ag" ? "rgba(0,255,204,0.3)" : "rgba(255,230,0,0.25)"}`,
+                  }}>
+                    {ev.type === "ag" ? "↑ AG Event" : "■ Non-AG"}
+                  </span>
+                </div>
 
-        <div className="hero-btns" style={{ animation: "fadeUp .8s ease forwards .8s", opacity: 0 }}>
+                {/* big date */}
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: "clamp(64px, 14vw, 110px)",
+                  letterSpacing: "0.04em",
+                  lineHeight: 1,
+                  color: "#fff",
+                  marginBottom: 12,
+                }}>
+                  {ev.month} {ev.day}
+                </div>
+
+                {/* title */}
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: "clamp(18px, 4vw, 28px)",
+                  letterSpacing: "0.08em",
+                  color: "rgba(255,255,255,0.9)",
+                  marginBottom: 10,
+                }}>
+                  {ev.title}
+                </div>
+
+                {/* venue */}
+                <div style={{
+                  fontFamily: "'Space Mono', monospace",
+                  fontSize: 10,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "var(--gray)",
+                  marginBottom: 32,
+                }}>
+                  {ev.venue} · {ev.city}
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* dot nav */}
+          {events.length > 1 && (
+            <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 28 }}>
+              {events.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  style={{
+                    width: i === sliderIdx ? 20 : 6,
+                    height: 6,
+                    borderRadius: 3,
+                    border: "none",
+                    background: i === sliderIdx ? "var(--accent-cyan)" : "rgba(255,255,255,0.2)",
+                    cursor: "crosshair",
+                    padding: 0,
+                    transition: "all 0.3s ease",
+                  }}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* cta */}
           <Link
             href="/events"
             style={{
@@ -104,34 +174,16 @@ export default function Home() {
               textTransform: "uppercase",
               color: "var(--black)",
               background: "var(--accent-cyan)",
-              padding: "12px 28px",
+              padding: "12px 32px",
               textDecoration: "none",
               fontWeight: 700,
+              display: "inline-block",
               transition: "background 0.2s",
             }}
             onMouseEnter={e => (e.currentTarget.style.background = "var(--white)")}
             onMouseLeave={e => (e.currentTarget.style.background = "var(--accent-cyan)")}
           >
-            Upcoming Events
-          </Link>
-          <Link
-            href="/squad"
-            style={{
-              fontFamily: "'Space Mono', monospace",
-              fontSize: 10,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: "var(--white)",
-              background: "transparent",
-              border: "1px solid rgba(255,255,255,0.22)",
-              padding: "12px 28px",
-              textDecoration: "none",
-              transition: "border-color 0.2s",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--white)")}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)")}
-          >
-            Meet the Squad
+            View All Events →
           </Link>
         </div>
 
@@ -145,6 +197,7 @@ export default function Home() {
           animation: "fadeUp .8s ease forwards 1.2s",
           opacity: 0,
           whiteSpace: "nowrap",
+          zIndex: 1,
         }}>
           ↓ Scroll
         </p>
@@ -212,7 +265,7 @@ export default function Home() {
         <SectionHeader num="02" title="Squad" sub="The Crew" />
 
         <div className="grid-3col">
-          {squad.map(m => <SquadCard key={m.name} {...m} />)}
+          {squad.map(m => <SquadCard key={m.slug} {...m} />)}
         </div>
 
         <div style={{ marginTop: 28, textAlign: "right" }}>
@@ -259,13 +312,15 @@ export default function Home() {
           to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
+
     </main>
   );
 }
 
 /* ── Sub-components ── */
 
-function EventCard({ type, date, title, venue }: { type: string; date: string; title: string; venue: string }) {
+function EventCard({ type, month, day, title, venue, city }: Event) {
+  const date = `${month} ${day}`;
   return (
     <div
       style={{
@@ -295,15 +350,15 @@ function EventCard({ type, date, title, venue }: { type: string; date: string; t
       </span>
       <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(28px, 5vw, 40px)", letterSpacing: "0.04em", lineHeight: 1, marginBottom: 4 }}>{date}</div>
       <div style={{ fontSize: 14, fontWeight: 500, color: "var(--off-white)", marginBottom: 5 }}>{title}</div>
-      <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "var(--gray)", letterSpacing: "0.1em" }}>{venue}</div>
+      <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "var(--gray)", letterSpacing: "0.1em" }}>{venue} · {city}</div>
     </div>
   );
 }
 
-function SquadCard({ initials, name, role, quote }: { initials: string; name: string; role: string; quote: string }) {
+function SquadCard({ slug, initials, name, role, quote }: SquadMember) {
   return (
     <Link
-      href={`/squad/${name.toLowerCase().replace(/\s+/g, "-")}`}
+      href={`/squad/${slug}`}
       style={{ display: "block", background: "var(--mid-gray)", padding: "28px 22px", textDecoration: "none", color: "inherit", transition: "background 0.2s" }}
       onMouseEnter={e => (e.currentTarget.style.background = "var(--dark-gray)")}
       onMouseLeave={e => (e.currentTarget.style.background = "var(--mid-gray)")}

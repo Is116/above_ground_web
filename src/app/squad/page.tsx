@@ -1,20 +1,19 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SectionHeader from "@/components/SectionHeader";
 import Link from "next/link";
-
-const members = [
-  { initials: "ST", name: "Sankta T",    slug: "sankta-t",    role: "DJ · Producer" },
-  { initials: "LL", name: "Louie Lanka", slug: "louie-lanka", role: "DJ · Producer" },
-  { initials: "HL", name: "HypeLies",   slug: "hypelies",    role: "DJ · Producer" },
-  { initials: "DB", name: "Dru-Boy",    slug: "dru-boy",     role: "DJ · Producer" },
-  { initials: "GG", name: "Glass Guts", slug: "glass-guts",  role: "DJ · Producer" },
-  { initials: "AX", name: "Alexi",      slug: "alexi",       role: "DJ · Producer" },
-];
+import type { SquadMember } from "@/lib/db";
 
 export default function SquadPage() {
+  const [members, setMembers] = useState<SquadMember[]>([]);
+
+  useEffect(() => {
+    fetch("/api/squad").then(r => r.json()).then(setMembers);
+  }, []);
+
   return (
     <main>
       <Nav />

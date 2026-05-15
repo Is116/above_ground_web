@@ -1,17 +1,19 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SectionHeader from "@/components/SectionHeader";
 import Image from "next/image";
-
-const items = [
-  { icon: "◎", label: "Stickers",  price: "$5"  },
-  { icon: "▣", label: "Shirts",    price: "$35" },
-  { icon: "⬡", label: "USB Mixes", price: "$15" },
-];
+import type { ShopItem } from "@/lib/db";
 
 export default function ShopPage() {
+  const [items, setItems] = useState<ShopItem[]>([]);
+
+  useEffect(() => {
+    fetch("/api/shop").then(r => r.json()).then(setItems);
+  }, []);
+
   return (
     <main>
       <Nav />
@@ -27,7 +29,7 @@ export default function ShopPage() {
           <div className="grid-3col">
             {items.map(item => (
               <div
-                key={item.label}
+                key={item.id}
                 style={{ background: "var(--black)", padding: "44px 24px", textAlign: "center", transition: "background 0.2s" }}
                 onMouseEnter={e => (e.currentTarget.style.background = "var(--mid-gray)")}
                 onMouseLeave={e => (e.currentTarget.style.background = "var(--black)")}

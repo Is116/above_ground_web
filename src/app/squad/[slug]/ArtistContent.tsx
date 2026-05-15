@@ -3,22 +3,9 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import type { SquadMember } from "@/lib/db";
 
-const members: Record<string, { name: string; initials: string; role: string; bio: string; quote: string }> = {
-  "sankta-t":    { name: "Sankta T",    initials: "ST", role: "DJ · Producer", bio: "Sankta T brings a blend of underground house and techno with a Chicago edge. Bio coming soon.", quote: "Sauce: something unique to me"  },
-  "louie-lanka": { name: "Louie Lanka", initials: "LL", role: "DJ · Producer", bio: "Louie Lanka's sound defies easy categorization — expect the unexpected. Bio coming soon.",     quote: "Your vibe, your frequency"      },
-  "hypelies":    { name: "HypeLies",   initials: "HL", role: "DJ · Producer", bio: "HypeLies cuts through the noise with surgical precision. Bio coming soon.",                       quote: "Truth in the noise"             },
-  "dru-boy":     { name: "Dru-Boy",    initials: "DB", role: "DJ · Producer", bio: "Dru-Boy keeps the dance floor moving. Bio coming soon.",                                          quote: "In the mix, always"             },
-  "glass-guts":  { name: "Glass Guts", initials: "GG", role: "DJ · Producer", bio: "Glass Guts — raw, transparent, unfiltered. Bio coming soon.",                                   quote: "Transparent frequencies"        },
-  "alexi":       { name: "Alexi",      initials: "AX", role: "DJ · Producer", bio: "Alexi stays in the cut, building energy with intention. Bio coming soon.",                       quote: "In the cut, always"             },
-};
-
-export default function ArtistContent({ slug }: { slug: string }) {
-  const member = members[slug];
-  if (!member) return (
-    <div style={{ padding: "120px 24px", fontFamily: "Space Mono, monospace", fontSize: 11, color: "var(--gray)" }}>Artist not found.</div>
-  );
-
+export default function ArtistContent({ member }: { member: SquadMember }) {
   return (
     <main>
       <Nav />

@@ -1,19 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SectionHeader from "@/components/SectionHeader";
-
-const events = [
-  { id: 1, type: "ag",       month: "JUN", day: "15", year: "2026", title: "AG Pres: Too Many Men Radio",       venue: "TBA", city: "Chicago, IL",  desc: "AboveGround presents Too Many Men Radio — a night of deep house and electronic music." },
-  { id: 2, type: "ag",       month: "JUL", day: "18", year: "2026", title: "AboveGround × Vibe Syndicate",      venue: "TBA", city: "Chicago, IL",  desc: "A collaborative event with Vibe Syndicate collective." },
-  { id: 3, type: "external", month: "AUG", day: "03", year: "2026", title: "Sankta T @ Underground Resistance", venue: "TBA", city: "Detroit, MI",  desc: "Sankta T plays Underground Resistance event in Detroit." },
-  { id: 4, type: "ag",       month: "AUG", day: "22", year: "2026", title: "AboveGround Open Decks",            venue: "TBA", city: "Chicago, IL",  desc: "Open decks night with the full AboveGround crew." },
-];
+import type { Event } from "@/lib/db";
 
 export default function EventsPage() {
+  const [events, setEvents] = useState<Event[]>([]);
   const [filter, setFilter] = useState<"all" | "ag" | "external">("all");
+
+  useEffect(() => {
+    fetch("/api/events").then(r => r.json()).then(setEvents);
+  }, []);
+
   const filtered = filter === "all" ? events : events.filter(e => e.type === filter);
 
   const monoTag: React.CSSProperties = {
