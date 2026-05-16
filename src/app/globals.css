@@ -178,6 +178,19 @@ a, button { cursor: crosshair; }
   .event-row-body  { padding: 20px 16px; }
   .event-row-arrow { display: none; }
 
+  .mobile-arrow-section { display: block !important; }
+
+  .twitch-bar { gap: 0 !important; }
+
+  .mobile-arrow-bg { display: none !important; }
+  .desktop-arrow { display: none !important; }
+}
+
+/* Desktop (>768px) */
+@media (min-width: 769px) {
+  .mobile-arrow-bg { display: none !important; }
+  .desktop-arrow { display: block !important; }
+
   .artist-grid { grid-template-columns: 1fr; gap: 32px; }
 }
 

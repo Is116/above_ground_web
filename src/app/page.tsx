@@ -12,6 +12,7 @@ import type { Event, SquadMember } from "@/lib/db";
 
 const ParticleField = dynamic(() => import("@/components/ParticleField"), { ssr: false });
 const DJScene = dynamic(() => import("@/components/DJScene"), { ssr: false });
+const AGSymbol = dynamic(() => import("@/components/AGSymbol"), { ssr: false });
 
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -204,8 +205,15 @@ export default function Home() {
       </section>
 
       {/* ── WATCH / TWITCH ── */}
-      <section id="watch" style={{ position: "relative", zIndex: 10, background: "var(--mid-gray)", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div className="twitch-bar">
+      <section id="watch" style={{ position: "relative", zIndex: 10, background: "var(--mid-gray)", borderTop: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }}>
+        {/* Arrow background layer - mobile only */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0, display: "none", justifyContent: "center", alignItems: "center" }} className="mobile-arrow-bg">
+          <div style={{ height: "280px", width: "280px", opacity: 0.2 }}>
+            <AGSymbol />
+          </div>
+        </div>
+        {/* Live content layer on top */}
+        <div className="twitch-bar" style={{ display: "flex", alignItems: "center", gap: 40, position: "relative", zIndex: 1 }}>
           <div className="twitch-side-label">Live / Watch</div>
           <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 24px", textAlign: "center" }}>
             <div>
@@ -214,6 +222,9 @@ export default function Home() {
               <p style={{ ...monoTag, color: "var(--gray)", marginBottom: 6 }}>24/7 Channel — Coming Soon</p>
               <p style={{ ...monoTag, color: "rgba(255,255,255,0.2)", fontSize: 9, marginTop: 16 }}>Twitch embed drops here</p>
             </div>
+          </div>
+          <div style={{ width: "280px", height: "280px", flexShrink: 0, overflow: "hidden" }} className="desktop-arrow">
+            <AGSymbol />
           </div>
         </div>
       </section>

@@ -29,17 +29,17 @@ function Laser({ x, y = -5.5, hex, speed, phase, sweep, tilt }: LaserProps) {
       {/* core */}
       <mesh position={[0, len / 2, 0]}>
         <cylinderGeometry args={[0.013, 0.013, len, 6]} />
-        <meshBasicMaterial color={hex} transparent opacity={0.22} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <meshBasicMaterial color={hex} transparent opacity={0.55} blending={THREE.AdditiveBlending} depthWrite={false} />
       </mesh>
       {/* inner glow */}
       <mesh position={[0, len / 2, 0]}>
         <cylinderGeometry args={[0.06, 0.032, len, 6]} />
-        <meshBasicMaterial color={hex} transparent opacity={0.055} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <meshBasicMaterial color={hex} transparent opacity={0.14} blending={THREE.AdditiveBlending} depthWrite={false} />
       </mesh>
       {/* outer halo */}
       <mesh position={[0, len / 2, 0]}>
         <cylinderGeometry args={[0.2, 0.07, len, 6]} />
-        <meshBasicMaterial color={hex} transparent opacity={0.018} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <meshBasicMaterial color={hex} transparent opacity={0.05} blending={THREE.AdditiveBlending} depthWrite={false} />
       </mesh>
       <pointLight color={hex} intensity={1.2} distance={6} decay={2} />
     </group>
@@ -98,7 +98,6 @@ function DesktopScene() {
       <Laser x={2.9}  hex="#00ffcc" speed={0.40} phase={0.7} sweep={0.52} tilt={-0.12} />
       <Laser x={2.2}  hex="#ff00aa" speed={0.57} phase={1.8} sweep={0.48} tilt={0.08}  />
       <Laser x={1.5}  hex="#ffe600" speed={0.50} phase={2.9} sweep={0.36} tilt={-0.22} />
-      <Particles count={300} />
     </>
   );
 }
@@ -110,10 +109,11 @@ function MobileScene() {
     <>
       <ambientLight intensity={0.07} />
       {/* fan from bottom centre */}
-      <Laser x={-0.8} hex="#00ffcc" speed={0.38} phase={0.0} sweep={0.65} tilt={-0.55} />
-      <Laser x={0}    hex="#ff00aa" speed={0.52} phase={1.2} sweep={0.55} tilt={0.0}   />
-      <Laser x={0.8}  hex="#ffe600" speed={0.44} phase={2.5} sweep={0.65} tilt={0.55}  />
-      <Particles count={180} />
+      <Laser x={-1.4} hex="#00ffcc" speed={0.36} phase={0.0} sweep={0.70} tilt={-0.80} />
+      <Laser x={-0.6} hex="#ff00aa" speed={0.50} phase={1.1} sweep={0.60} tilt={-0.28} />
+      <Laser x={0}    hex="#ffe600" speed={0.44} phase={2.2} sweep={0.50} tilt={0.0}   />
+      <Laser x={0.6}  hex="#00ffcc" speed={0.55} phase={0.8} sweep={0.60} tilt={0.28}  />
+      <Laser x={1.4}  hex="#ff00aa" speed={0.40} phase={1.9} sweep={0.70} tilt={0.80}  />
     </>
   );
 }
