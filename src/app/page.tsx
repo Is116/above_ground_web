@@ -190,13 +190,13 @@ export default function Home() {
         <p style={{
           position: "absolute",
           bottom: 36,
-          left: "50%",
-          transform: "translateX(-50%)",
+          left: 0,
+          right: 0,
+          textAlign: "center",
           ...monoTag,
           color: "var(--gray)",
           animation: "fadeUp .8s ease forwards 1.2s",
           opacity: 0,
-          whiteSpace: "nowrap",
           zIndex: 1,
         }}>
           ↓ Scroll

@@ -1,13 +1,14 @@
 "use client";
 
 import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 /* ─── Laser beam ─────────────────────────────────────────── */
 
 interface LaserProps {
   x: number;
+  y?: number;
   hex: string;
   speed: number;
   phase: number;
@@ -15,7 +16,7 @@ interface LaserProps {
   tilt: number;
 }
 
-function Laser({ x, hex, speed, phase, sweep, tilt }: LaserProps) {
+function Laser({ x, y = -5.5, hex, speed, phase, sweep, tilt }: LaserProps) {
   const ref = useRef<THREE.Group>(null!);
   const len = 22;
 
@@ -24,21 +25,21 @@ function Laser({ x, hex, speed, phase, sweep, tilt }: LaserProps) {
   });
 
   return (
-    <group ref={ref} position={[x, -5.5, 0.4]}>
+    <group ref={ref} position={[x, y, 0.4]}>
       {/* core */}
       <mesh position={[0, len / 2, 0]}>
         <cylinderGeometry args={[0.013, 0.013, len, 6]} />
-        <meshBasicMaterial color={hex} transparent opacity={0.75} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <meshBasicMaterial color={hex} transparent opacity={0.22} blending={THREE.AdditiveBlending} depthWrite={false} />
       </mesh>
       {/* inner glow */}
       <mesh position={[0, len / 2, 0]}>
         <cylinderGeometry args={[0.06, 0.032, len, 6]} />
-        <meshBasicMaterial color={hex} transparent opacity={0.18} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <meshBasicMaterial color={hex} transparent opacity={0.055} blending={THREE.AdditiveBlending} depthWrite={false} />
       </mesh>
       {/* outer halo */}
       <mesh position={[0, len / 2, 0]}>
         <cylinderGeometry args={[0.2, 0.07, len, 6]} />
-        <meshBasicMaterial color={hex} transparent opacity={0.06} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <meshBasicMaterial color={hex} transparent opacity={0.018} blending={THREE.AdditiveBlending} depthWrite={false} />
       </mesh>
       <pointLight color={hex} intensity={1.2} distance={6} decay={2} />
     </group>
@@ -78,31 +79,50 @@ function Particles({ count = 280 }: { count?: number }) {
 
   return (
     <points ref={ref} geometry={geo}>
-      <pointsMaterial size={0.026} color="#00ffcc" transparent opacity={0.18} blending={THREE.AdditiveBlending} depthWrite={false} />
+      <pointsMaterial size={0.026} color="#00ffcc" transparent opacity={0.35} blending={THREE.AdditiveBlending} depthWrite={false} />
     </points>
   );
 }
 
-/* ─── Full scene ─────────────────────────────────────────── */
+/* ─── Desktop scene: left/right banks ───────────────────── */
 
-function Scene() {
+function DesktopScene() {
   return (
     <>
       <ambientLight intensity={0.07} />
-
       {/* left bank */}
       <Laser x={-2.9} hex="#00ffcc" speed={0.36} phase={0.0} sweep={0.52} tilt={0.12}  />
       <Laser x={-2.2} hex="#ff00aa" speed={0.54} phase={1.1} sweep={0.48} tilt={-0.08} />
       <Laser x={-1.5} hex="#ffe600" speed={0.46} phase={2.4} sweep={0.36} tilt={0.22}  />
-
       {/* right bank */}
       <Laser x={2.9}  hex="#00ffcc" speed={0.40} phase={0.7} sweep={0.52} tilt={-0.12} />
       <Laser x={2.2}  hex="#ff00aa" speed={0.57} phase={1.8} sweep={0.48} tilt={0.08}  />
       <Laser x={1.5}  hex="#ffe600" speed={0.50} phase={2.9} sweep={0.36} tilt={-0.22} />
-
       <Particles count={300} />
     </>
   );
+}
+
+/* ─── Mobile scene: centre fan ───────────────────────────── */
+
+function MobileScene() {
+  return (
+    <>
+      <ambientLight intensity={0.07} />
+      {/* fan from bottom centre */}
+      <Laser x={-0.8} hex="#00ffcc" speed={0.38} phase={0.0} sweep={0.65} tilt={-0.55} />
+      <Laser x={0}    hex="#ff00aa" speed={0.52} phase={1.2} sweep={0.55} tilt={0.0}   />
+      <Laser x={0.8}  hex="#ffe600" speed={0.44} phase={2.5} sweep={0.65} tilt={0.55}  />
+      <Particles count={180} />
+    </>
+  );
+}
+
+/* ─── Responsive scene switcher ──────────────────────────── */
+
+function Scene() {
+  const { size } = useThree();
+  return size.width < 768 ? <MobileScene /> : <DesktopScene />;
 }
 
 /* ─── Export ─────────────────────────────────────────────── */

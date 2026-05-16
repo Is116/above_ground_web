@@ -47,7 +47,7 @@ export default function ParticleField() {
     geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-    const mat = new THREE.PointsMaterial({ size: 0.09, vertexColors: true, transparent: true, opacity: 0.75 });
+    const mat = new THREE.PointsMaterial({ size: 0.11, vertexColors: true, transparent: true, opacity: 1.0 });
     const points = new THREE.Points(geo, mat);
     scene.add(points);
 
@@ -112,7 +112,7 @@ export default function ParticleField() {
         width: "100%", height: "100%",
         zIndex: 0,
         pointerEvents: "none",
-        opacity: 0.38,
+        opacity: 0.72,
       }}
     />
   );
