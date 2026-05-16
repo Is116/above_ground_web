@@ -5,7 +5,7 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const member = getSquadMember(slug);
+  const member = await getSquadMember(slug);
   if (!member) return Response.json({ error: 'Not found' }, { status: 404 });
   return Response.json(member);
 }

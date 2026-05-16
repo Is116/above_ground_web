@@ -1,5 +1,5 @@
 import { getShopItems } from '@/lib/db';
 
-export function GET() {
-  return Response.json(getShopItems());
+export async function GET() {
+  return Response.json(await getShopItems());
 }

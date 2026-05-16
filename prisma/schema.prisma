@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id    Int    @id @default(autoincrement())
+  type  String
+  month String
+  day   String
+  year  String
+  title String
+  venue String
+  city  String
+  desc  String
+
+  @@map("events")
+}
+
+model SquadMember {
+  id       Int    @id @default(autoincrement())
+  slug     String @unique
+  name     String
+  initials String
+  role     String
+  bio      String
+  quote    String
+
+  @@map("squad_members")
+}
+
+model ShopItem {
+  id    Int    @id @default(autoincrement())
+  icon  String
+  label String
+  price String
+
+  @@map("shop_items")
+}
+
+model MarqueeItem {
+  id   Int    @id @default(autoincrement())
+  text String
+
+  @@map("marquee_items")
+}

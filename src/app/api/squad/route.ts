@@ -1,5 +1,5 @@
 import { getAllSquadMembers } from '@/lib/db';
 
-export function GET() {
-  return Response.json(getAllSquadMembers());
+export async function GET() {
+  return Response.json(await getAllSquadMembers());
 }

@@ -7,7 +7,7 @@ export async function PUT(
 ) {
   const { id } = await params;
   const data = (await request.json()) as Omit<SquadMember, 'id'>;
-  const result = updateSquadMember(Number(id), data);
+  const result = await updateSquadMember(Number(id), data);
   return Response.json(result);
 }
 
@@ -16,6 +16,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  deleteSquadMember(Number(id));
+  await deleteSquadMember(Number(id));
   return Response.json({ ok: true });
 }

@@ -6,7 +6,7 @@ export async function PUT(
 ) {
   const { id } = await params;
   const { text } = await req.json();
-  return Response.json(updateMarqueeItem(Number(id), text));
+  return Response.json(await updateMarqueeItem(Number(id), text));
 }
 
 export async function DELETE(
@@ -14,6 +14,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  deleteMarqueeItem(Number(id));
+  await deleteMarqueeItem(Number(id));
   return Response.json({ ok: true });
 }

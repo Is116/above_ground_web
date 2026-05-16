@@ -7,7 +7,7 @@ export async function PUT(
 ) {
   const { id } = await params;
   const data = (await request.json()) as Omit<ShopItem, 'id'>;
-  const result = updateShopItem(Number(id), data);
+  const result = await updateShopItem(Number(id), data);
   return Response.json(result);
 }
 
@@ -16,6 +16,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  deleteShopItem(Number(id));
+  await deleteShopItem(Number(id));
   return Response.json({ ok: true });
 }
