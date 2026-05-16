@@ -108,12 +108,7 @@ function MobileScene() {
   return (
     <>
       <ambientLight intensity={0.07} />
-      {/* fan from bottom centre */}
-      <Laser x={-1.4} hex="#00ffcc" speed={0.36} phase={0.0} sweep={0.70} tilt={-0.80} />
-      <Laser x={-0.6} hex="#ff00aa" speed={0.50} phase={1.1} sweep={0.60} tilt={-0.28} />
-      <Laser x={0}    hex="#ffe600" speed={0.44} phase={2.2} sweep={0.50} tilt={0.0}   />
-      <Laser x={0.6}  hex="#00ffcc" speed={0.55} phase={0.8} sweep={0.60} tilt={0.28}  />
-      <Laser x={1.4}  hex="#ff00aa" speed={0.40} phase={1.9} sweep={0.70} tilt={0.80}  />
+      {/* Lasers hidden on mobile */}
     </>
   );
 }
