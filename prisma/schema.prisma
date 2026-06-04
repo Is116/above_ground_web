@@ -8,15 +8,21 @@ datasource db {
 }
 
 model Event {
-  id    Int    @id @default(autoincrement())
-  type  String
-  month String
-  day   String
-  year  String
-  title String
-  venue String
-  city  String
-  desc  String
+  id       Int     @id @default(autoincrement())
+  type     String
+  month    String
+  day      String
+  year     String
+  title    String
+  venue    String
+  city     String
+  desc     String
+  artists    String?
+  gallery    String?
+  thankyou   String?
+  slug       String?
+  soundcloud String?
+  ticketUrl  String?  @map("ticket_url")
 
   @@map("events")
 }
