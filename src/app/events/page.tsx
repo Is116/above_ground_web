@@ -355,7 +355,7 @@ export default function EventsPage() {
                   <video src={thumb} autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={thumb} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  <img src={thumb} alt="" width={1080} height={1080} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 )
               ) : (
                 <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 280 }}>

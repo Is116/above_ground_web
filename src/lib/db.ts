@@ -41,6 +41,13 @@ export type SquadMember = {
   role: string
   bio: string
   quote: string
+  bpm: string | null
+  gallery: string | null
+  traxx: string | null
+  notableShows: string | null
+  alsoKnownAs: string | null
+  links: string | null
+  contact: string | null
 }
 
 export type ShopItem = {
@@ -79,6 +86,13 @@ export function getSquadMember(slug: string): Promise<SquadMember | null> {
 export async function getSquadSlugs(): Promise<string[]> {
   const rows = await prisma.squadMember.findMany({ select: { slug: true } })
   return rows.map(r => r.slug)
+}
+
+export function getEventsByArtist(name: string): Promise<Event[]> {
+  return prisma.event.findMany({
+    where: { artists: { contains: name } },
+    orderBy: [{ year: 'desc' }, { month: 'desc' }, { day: 'desc' }],
+  })
 }
 
 export function getShopItems(): Promise<ShopItem[]> {

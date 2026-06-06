@@ -145,11 +145,19 @@ a, button { cursor: crosshair; }
 .event-row-body  { min-width: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 10px; }
 .event-row-arrow { text-align: right; }
 
-/* Artist page grid */
+/* Artist page grid (old) */
 .artist-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
+}
+
+/* Artist profile: info (left) + main photo (right) */
+.artist-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 560px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 /* Hero buttons row */
@@ -161,8 +169,8 @@ a, button { cursor: crosshair; }
 .events-tl-bar::-webkit-scrollbar { display: none; }
 .events-tl-bar:active  { cursor: grabbing; }
 .events-filter         { border-top: 1px solid rgba(255,255,255,0.06); background: var(--mid-gray); padding: 32px 40px 20px; }
-.events-focused        { position: relative; display: grid; grid-template-columns: 1fr 1fr; min-height: 360px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.events-focused-thumb  { position: relative; overflow: hidden; background: #080808; min-height: 280px; }
+.events-focused        { position: relative; display: grid; grid-template-columns: auto 1fr; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.events-focused-thumb  { position: relative; overflow: hidden; background: #080808; aspect-ratio: 1/1; width: min(50vw, 480px); }
 .events-focused-info   { padding: 40px 44px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
 .events-tl-month-label { display: inline; }
 .events-focused-prev,
@@ -202,8 +210,8 @@ a, button { cursor: crosshair; }
   .events-header        { padding: 32px 24px 24px; }
   .events-tl-bar        { padding: 0 24px; }
   .events-filter        { padding: 20px 24px 16px; }
-  .events-focused       { grid-template-columns: 1fr; min-height: auto; }
-  .events-focused-thumb { min-height: 220px; }
+  .events-focused       { grid-template-columns: 1fr; }
+  .events-focused-thumb { width: 100%; aspect-ratio: 1/1; }
   .events-focused-info  { padding: 24px 52px; gap: 12px; }
   .events-tl-month-label { display: none; }
 }
@@ -214,6 +222,7 @@ a, button { cursor: crosshair; }
   .desktop-arrow { display: block !important; }
 
   .artist-grid { grid-template-columns: 1fr; gap: 32px; }
+  .artist-profile-grid { grid-template-columns: 1fr; }
 }
 
 /* ─── Mobile (≤480px) ─── */

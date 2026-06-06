@@ -28,13 +28,20 @@ model Event {
 }
 
 model SquadMember {
-  id       Int    @id @default(autoincrement())
-  slug     String @unique
-  name     String
-  initials String
-  role     String
-  bio      String
-  quote    String
+  id           Int     @id @default(autoincrement())
+  slug         String  @unique
+  name         String
+  initials     String
+  role         String
+  bio          String
+  quote        String
+  bpm          String?
+  gallery      String?
+  traxx        String?
+  notableShows String?
+  alsoKnownAs  String?
+  links        String?
+  contact      String?
 
   @@map("squad_members")
 }

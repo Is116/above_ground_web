@@ -51,7 +51,7 @@ export default function GallerySlideshow({ items, title, venue, city, artists, s
   return (
     <div style={{ position: 'relative', width: '100%', background: '#000' }}>
       {/* Media */}
-      <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', width: '100%', aspectRatio: '820/312', overflow: 'hidden' }}>
         {vid ? (
           <video
             ref={videoRef}
@@ -69,6 +69,8 @@ export default function GallerySlideshow({ items, title, venue, city, artists, s
             key={current}
             src={current}
             alt=""
+            width={1640}
+            height={624}
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'opacity 0.5s' }}
           />
         )}
@@ -78,7 +80,7 @@ export default function GallerySlideshow({ items, title, venue, city, artists, s
 
         {/* Dot indicators */}
         {items.length > 1 && (
-          <div style={{ position: 'absolute', bottom: 100, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 6 }}>
+          <div style={{ position: 'absolute', bottom: 48, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 6 }}>
             {items.map((_, i) => (
               <button
                 key={i}
@@ -91,7 +93,7 @@ export default function GallerySlideshow({ items, title, venue, city, artists, s
         )}
 
         {/* Event info overlay */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '32px 40px 36px' }}>
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 40px 20px' }}>
           <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#00ffcc', marginBottom: 10 }}>
             {venue} · {city}
           </div>
